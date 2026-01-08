@@ -8,8 +8,6 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk1paHJpYmFuIGnDp2luIEHFn2sgT3l1bnUiLAogICJzaG9ydF9uYW1lIjogIkHFn2sgT3l1bnUiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiNmZjY5YjQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhjbVZqZENCbWFXeHNQU0lqWm1ZMk9XSTBJaUIzYVdSMGFEMGlNVEl3SWlCb1pXbG5hSFE5SWpFeU1DSXZQanh3WVhSb0lHUTlJazB6TUNBMk1HTXdJREUySURFeklERTJJREV6SURFMklEQWdNVFlnTVRNZ01UWWdNVE1nTVRZZ01DQXhOaUF4TXkweE5pQXhNeTB4TmlBeE15MHhOaUF3TFRFMkxURXpMVEUySURFekxURTJJREUwSUhvaVlTQW9jMmx1WldNZ01DQXdJREVnTWpBZ01qQXBJaUJ6ZEhKdmEyVTlJaU5tWm1ZaUlITjBjbTlyWlMxM2FXUjBhRDBpTWlJdlBqd3ZjM1puUGc9PSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
-    <meta name="theme-color" content="#ff69b4">
     <style>
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
@@ -46,104 +44,111 @@
             const [chocolateAttempts, setChocolateAttempts] = useState(0);
             const [buttonPosition, setButtonPosition] = useState({ top: '50%', left: '30%' });
             const [showFinalMessage, setShowFinalMessage] = useState(false);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [answered, setAnswered] = useState(false);
 
             const questions = [
                 {
                     question: "Seninle nerede tanıştık?",
                     options: [
-                        { text: "Ormanda", image: "https://images.unsplash.com/photo-1511497584788-876760111969?w=400" },
-                        { text: "Düğünde", image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400" },
-                        { text: "Dizi çekiminde", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23333' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='24' fill='white' text-anchor='middle'%3EDizi Seti%3C/text%3E%3C/svg%3E", correct: true },
-                        { text: "Savaşta", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400" }
+                        { text: "Ormanda", image: "https://i.imgur.com/yRCBPzM.jpeg" },
+                        { text: "Düğünde", image: "https://i.imgur.com/svjhQ36.jpeg" },
+                        { text: "Dizi çekiminde", image: "https://i.imgur.com/qdVeFo1.jpeg", correct: true },
+                        { text: "Savaşta", image: "https://i.imgur.com/dawvTBN.jpeg" }
                     ]
                 },
                 {
                     question: "Elini ilk nerde tuttum?",
                     options: [
-                        { text: "AVM'de", image: "https://images.unsplash.com/photo-1555529902-5261145633bf?w=400" },
-                        { text: "Patende", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%234A90E2' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='24' fill='white' text-anchor='middle'%3EPaten%3C/text%3E%3C/svg%3E", correct: true },
-                        { text: "Evde", image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400" },
-                        { text: "Uludağ'da", image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=400" }
+                        { text: "AVM'de", image: "https://i.imgur.com/ricG32X.jpeg" },
+                        { text: "Patende", image: "https://i.imgur.com/P9xOXzZ.jpeg", correct: true },
+                        { text: "Evde", image: "https://i.imgur.com/L37XsOi.jpeg" },
+                        { text: "Uludağ'da", image: "https://i.imgur.com/bQxVh6S.jpeg" }
                     ]
                 },
                 {
                     question: "Seni ilk nerde öptüm?",
                     options: [
-                        { text: "Uludağ gezisinde", image: "https://images.unsplash.com/photo-1551582045-6ec9c11d8697?w=400" },
-                        { text: "Mangalda", image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400" },
-                        { text: "İlk şarap ve filmde", image: "https://images.unsplash.com/photo-1574267432644-f2f7000e3378?w=400" },
-                        { text: "İlk ben seni öptüm amk", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23FF1744' width='400' height='300'/%3E%3Ctext x='200' y='140' font-size='20' fill='white' text-anchor='middle'%3EŞaşırtma!%3C/text%3E%3Ctext x='200' y='170' font-size='18' fill='white' text-anchor='middle'%3ESen beni öptün 😘%3C/text%3E%3C/svg%3E", correct: true }
+                        { text: "Uludağ gezisinde", image: "https://i.imgur.com/pL8csLT.jpeg" },
+                        { text: "Mangalda", image: "https://i.imgur.com/RJsAJyE.jpeg" },
+                        { text: "İlk şarap ve filmde", image: "https://i.imgur.com/FUp9dwq.jpeg" },
+                        { text: "İlk ben seni öptüm amk", image: "https://i.imgur.com/qe5G0XD.jpeg", correct: true }
                     ]
                 },
                 {
                     question: "Sana aldığım ilk hediye neydi?",
                     options: [
-                        { text: "Masal Kitabı", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%238B4513' width='400' height='300'/%3E%3Crect fill='%23D4A574' x='100' y='50' width='200' height='200' rx='10'/%3E%3Ctext x='200' y='130' font-size='24' fill='%23333' text-anchor='middle'%3EMasal%3C/text%3E%3Ctext x='200' y='160' font-size='24' fill='%23333' text-anchor='middle'%3EKitabı%3C/text%3E%3Ctext x='200' y='190' font-size='40' text-anchor='middle'%3E📖%3C/text%3E%3C/svg%3E", correct: true },
-                        { text: "Ejderha Yumurtası", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23000' width='400' height='300'/%3E%3Cellipse cx='200' cy='150' rx='80' ry='100' fill='%23FF4500'/%3E%3Ctext x='200' y='260' font-size='20' fill='white' text-anchor='middle'%3EEjderha Yumurtası 🐉%3C/text%3E%3C/svg%3E" },
-                        { text: "Zaman Makinesi", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%234B0082' width='400' height='300'/%3E%3Ccircle cx='200' cy='150' r='60' fill='%2300CED1'/%3E%3Ctext x='200' y='240' font-size='20' fill='white' text-anchor='middle'%3EZaman Makinesi ⏰%3C/text%3E%3C/svg%3E" },
-                        { text: "Unicorn", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23FFB6C1' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='80' text-anchor='middle'%3E🦄%3C/text%3E%3Ctext x='200' y='220' font-size='24' fill='%23FF1493' text-anchor='middle'%3EUnicorn%3C/text%3E%3C/svg%3E" }
+                        { text: "Masal Kitabı", visual: "📚 Masal Kitabı", correct: true },
+                        { text: "Ejderha Yumurtası", visual: "🥚🐉 Ejderha Yumurtası" },
+                        { text: "Zaman Makinesi", visual: "⏰🚀 Zaman Makinesi" },
+                        { text: "Unicorn", visual: "🦄 Unicorn" }
                     ]
                 },
                 {
                     question: "İlk kedimiz?",
                     options: [
-                        { text: "Atom", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23E8E8E8' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='24' fill='%23666' text-anchor='middle'%3EAtom (Gri Tekir)%3C/text%3E%3C/svg%3E", correct: true },
-                        { text: "Enişte", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23000' width='400' height='300'/%3E%3Crect fill='%23FFF' x='150' y='100' width='100' height='100'/%3E%3Ctext x='200' y='240' font-size='24' fill='white' text-anchor='middle'%3EEnişte 😂%3C/text%3E%3C/svg%3E" },
-                        { text: "Sen", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23FF69B4' width='400' height='300'/%3E%3Ctext x='200' y='130' font-size='60' text-anchor='middle'%3E😸%3C/text%3E%3Ctext x='200' y='200' font-size='24' fill='white' text-anchor='middle'%3ESen (kedi kulaklı) 😂%3C/text%3E%3C/svg%3E" },
-                        { text: "Paspas", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23708090' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='24' fill='white' text-anchor='middle'%3EPaspas%3C/text%3E%3C/svg%3E" }
+                        { text: "Atom", image: "https://i.imgur.com/eDPsPVd.jpeg", correct: true },
+                        { text: "Enişte", image: "https://i.imgur.com/wXzylvl.jpeg" },
+                        { text: "Sen", image: "https://i.imgur.com/Cc0dBoZ.jpeg" },
+                        { text: "Paspas", image: "https://i.imgur.com/9Rf3nPv.jpeg" }
                     ]
                 },
                 {
                     question: "İlk gezimiz?",
                     options: [
-                        { text: "Çeşme", image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400" },
-                        { text: "Gölbaşı", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400" },
-                        { text: "Uludağ", image: "https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=400" },
-                        { text: "Eskişehir", image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400", correct: true }
+                        { text: "Çeşme", image: "https://i.imgur.com/I8vaMj3.jpeg" },
+                        { text: "Gölbaşı", image: "https://i.imgur.com/IZnjerm.jpeg" },
+                        { text: "Uludağ", image: "https://i.imgur.com/UfJ12PS.jpeg" },
+                        { text: "Eskişehir", image: "https://i.imgur.com/FwEQVwi.jpeg", correct: true }
                     ]
                 },
                 {
                     question: "Bizim şarkımız hangisi?",
                     options: [
-                        { text: "Deniz Kızı", image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400" },
-                        { text: "First Kiss", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23FF1493' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='32' fill='white' text-anchor='middle'%3E💋%3C/text%3E%3Ctext x='200' y='200' font-size='24' fill='white' text-anchor='middle'%3EFirst Kiss%3C/text%3E%3C/svg%3E" },
-                        { text: "Perfect", image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23FF6B6B' width='400' height='300'/%3E%3Ctext x='200' y='130' font-size='48' fill='white' text-anchor='middle'%3E♪♫%3C/text%3E%3Ctext x='200' y='180' font-size='28' fill='white' text-anchor='middle'%3EPerfect%3C/text%3E%3Ctext x='200' y='210' font-size='20' fill='white' text-anchor='middle'%3EEd Sheeran%3C/text%3E%3C/svg%3E", correct: true },
-                        { text: "Haydar Haydar", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" }
+                        { text: "Deniz Kızı", image: "https://i.imgur.com/RDnpxod.jpeg" },
+                        { text: "First Kiss", image: "https://i.imgur.com/Dwfeebu.jpeg" },
+                        { text: "Perfect", image: "https://i.imgur.com/tiSYBPf.jpeg", correct: true },
+                        { text: "Haydar Haydar", image: "https://i.imgur.com/nlVIxCj.jpeg" }
                     ]
                 },
                 {
                     question: "Yıl dönümünüz hangi tarihte?",
                     options: [
-                        { text: "27.02.2000", image: null },
-                        { text: "28.01.2021", image: null },
-                        { text: "21.03.2021", image: null, correct: true },
-                        { text: "Hepsi", image: null }
+                        { text: "27.02.2000", visual: "📅 27.02.2000" },
+                        { text: "28.01.2021", visual: "📅 28.01.2021" },
+                        { text: "21.03.2021", visual: "💕 21.03.2021", correct: true },
+                        { text: "Hepsi", visual: "📅 Hepsi" }
                     ]
                 },
                 {
                     question: "Hüseyin'i ne kadar seviyorsun?",
                     options: [
-                        { text: "Çok ama çok seviyorum", image: null, correct: true },
-                        { text: "Çok ama çok seviyorum", image: null, correct: true },
-                        { text: "Çok ama çok seviyorum", image: null, correct: true },
-                        { text: "Çok ama çok seviyorum", image: null, correct: true }
+                        { text: "Çok ama çok seviyorum", visual: "💕 Çok ama çok seviyorum", correct: true },
+                        { text: "Çok ama çok seviyorum", visual: "💖 Çok ama çok seviyorum", correct: true },
+                        { text: "Çok ama çok seviyorum", visual: "❤️ Çok ama çok seviyorum", correct: true },
+                        { text: "Çok ama çok seviyorum", visual: "💗 Çok ama çok seviyorum", correct: true }
                     ]
                 }
             ];
 
-            const handleAnswer = (isCorrect) => {
+            const handleAnswer = (index, isCorrect) => {
+                if (answered) return;
+                
+                setSelectedAnswer(index);
+                setAnswered(true);
+                
                 if (isCorrect) {
                     setScore(score + 1);
                 }
+            };
 
+            const nextQuestion = () => {
                 if (currentQuestion < questions.length - 1) {
-                    setTimeout(() => {
-                        setCurrentQuestion(currentQuestion + 1);
-                    }, 800);
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                    setAnswered(false);
                 } else {
-                    setTimeout(() => {
-                        setShowResult(true);
-                    }, 800);
+                    setShowResult(true);
                 }
             };
 
@@ -226,6 +231,34 @@
             }
 
             if (showResult) {
+                const passed = score >= 5;
+                
+                if (!passed) {
+                    return (
+                        <div className="min-h-screen bg-gradient-to-br from-red-300 via-orange-300 to-yellow-400 flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
+                                <div className="text-6xl mb-4">😢</div>
+                                <h1 className="text-3xl font-bold text-gray-800 mb-4">
+                                    Kaybettin! {score} / {questions.length} doğru
+                                </h1>
+                                
+                                <div className="bg-gradient-to-r from-red-100 to-orange-100 rounded-2xl p-6 my-6">
+                                    <p className="text-lg text-gray-700 leading-relaxed">
+                                        En az 5 soruyu doğru cevaplamalıydın! Belki anılarımızı daha iyi hatırlamaya çalışmalısın? 😅
+                                    </p>
+                                </div>
+
+                                <button
+                                    onClick={() => window.location.reload()}
+                                    className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg"
+                                >
+                                    Tekrar Dene
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+                
                 return (
                     <div className="min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 flex items-center justify-center p-4">
                         <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center relative overflow-hidden">
@@ -249,7 +282,7 @@
                             <div className="relative z-10">
                                 <div className="text-6xl mb-4">💕</div>
                                 <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                                    Mihriban, {score} / {questions.length} doğru!
+                                    Kazandın! {score} / {questions.length} doğru!
                                 </h1>
                                 
                                 <div className="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-6 my-6">
@@ -273,6 +306,26 @@
             }
 
             const currentQ = questions[currentQuestion];
+
+            const getButtonClass = (index, isCorrect) => {
+                if (!answered) {
+                    return "group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 bg-white border-4 border-transparent hover:border-pink-400 cursor-pointer";
+                }
+                
+                if (selectedAnswer === index) {
+                    if (isCorrect) {
+                        return "group relative overflow-hidden rounded-2xl shadow-lg bg-white border-4 border-green-500 cursor-not-allowed";
+                    } else {
+                        return "group relative overflow-hidden rounded-2xl shadow-lg bg-white border-4 border-red-500 cursor-not-allowed";
+                    }
+                }
+                
+                if (isCorrect) {
+                    return "group relative overflow-hidden rounded-2xl shadow-lg bg-white border-4 border-green-500 cursor-not-allowed";
+                }
+                
+                return "group relative overflow-hidden rounded-2xl shadow-lg bg-white border-4 border-gray-300 opacity-50 cursor-not-allowed";
+            };
 
             return (
                 <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 py-8 px-4">
@@ -299,12 +352,13 @@
                                 {currentQ.question}
                             </h2>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                 {currentQ.options.map((option, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => handleAnswer(option.correct)}
-                                        className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 bg-white border-4 border-transparent hover:border-pink-400"
+                                        onClick={() => handleAnswer(index, option.correct)}
+                                        className={getButtonClass(index, option.correct)}
+                                        disabled={answered}
                                     >
                                         {option.image ? (
                                             <>
@@ -319,18 +373,29 @@
                                             </>
                                         ) : (
                                             <div className="p-8 bg-gradient-to-br from-pink-100 to-purple-100 h-48 flex items-center justify-center">
-                                                <p className="text-xl font-bold text-gray-800">{option.text}</p>
+                                                <p className="text-xl font-bold text-gray-800">{option.visual || option.text}</p>
                                             </div>
                                         )}
                                     </button>
                                 ))}
                             </div>
+
+                            {answered && (
+                                <div className="text-center">
+                                    <button
+                                        onClick={nextQuestion}
+                                        className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-all"
+                                    >
+                                        {currentQuestion < questions.length - 1 ? 'Sonraki Soru →' : 'Sonuçları Gör →'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         <div className="text-center">
                             <p className="text-pink-600 font-semibold flex items-center justify-center gap-2">
                                 <Heart className="w-5 h-5" style={{fill: 'currentColor'}} />
-                                Kalpler: {score}
+                                Kalpler: {score} / {currentQuestion + (answered ? 1 : 0)}
                             </p>
                         </div>
                     </div>
